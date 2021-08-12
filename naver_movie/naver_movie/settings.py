@@ -10,10 +10,9 @@ DOWNLOAD_DELAY = 2
 
 COOKIES_ENABLED = True
 
-#DEFAULT_REQUEST_HEADERS = {
-#   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-#   'Accept-Language': 'en',
-#}
+DEFAULT_REQUEST_HEADERS = {
+  "Referer": "https://movie.naver.com/"
+}
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
@@ -32,10 +31,9 @@ DOWNLOADER_MIDDLEWARES = {
 RETRY_ENABLED = True
 RETRY_TIMES = 2
 
-# Configure item pipelines
-#ITEM_PIPELINES = {
-#    'naver_movie.pipelines.NaverMoviePipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'naver_movie.pipelines.NaverMoviePipeline': 300,
+}
 
 
 
