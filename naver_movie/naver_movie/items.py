@@ -10,5 +10,5 @@ class NaverMovieItem(scrapy.Item):
     view = scrapy.Field()
     director = scrapy.Field()
     actor = scrapy.Field()
-    is_pass = scrapy.Field()
+    # is_pass = scrapy.Field()
     crawled_time = scrapy.Field()
