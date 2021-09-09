@@ -1,4 +1,5 @@
 import datetime
+import MySQL
 from itemadapter import ItemAdapter
 from scrapy.exceptions import DropItem
 
@@ -15,7 +16,7 @@ class NaverMoviePipeline:
     def process_item(self, item, spider):
 
         if item.get("rate") != "0":
-            item["is_pass"] = True
+            # item["is_pass"] = True
             item["crawled_time"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             return item
