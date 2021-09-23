@@ -4,7 +4,9 @@ from app.libs import naver
 
 def kakao_local(KAKAO_KEY, addr):
     """
-    return lat, lon
+    kakao_local function : 특정 지역에 대한 좌표를 제공해주는 함수
+    input arguments : kakao_rest_api_key, region(korean) 
+    return lat, lon (about region)
     """
     
     url = f"https://dapi.kakao.com/v2/local/search/address.json?query={addr}"
@@ -18,6 +20,8 @@ def kakao_local(KAKAO_KEY, addr):
 
 def weather(WEATHER_KEY, lat, lon):
     """
+    weather function : 좌표에 대한 날씨 정보를 제공해주는 함수
+    input arguments : openweathermap_api_key, latitude, longitude
     return current hourly weather in English
     """
     
@@ -28,6 +32,13 @@ def weather(WEATHER_KEY, lat, lon):
 
 
 def run(NAVER_ID, NAVER_SECRET, KAKAO_KEY, WEATHER_KEY, addr):
+    """
+    run function : kakao_local, weather, translate 를 콜백함수로 받아
+                   최종적으로 특정 지역에 대한 날씨 정보를 제공해주는 함수
+    input argument : naver_client_id, naver_client_secret, kakao_rest_api_key
+                    , openweatermap_api_key, region
+    return current hourly weather in Korean
+    """
     lat, lon = kakao_local(KAKAO_KEY, addr)
     msg_en = weather(WEATHER_KEY, lat, lon)
     msg_ko = naver.translate(NAVER_ID, NAVER_SECRET, msg_en)
