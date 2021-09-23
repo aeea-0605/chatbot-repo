@@ -5,6 +5,9 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy(app)
 
 class NaverMovie(db.Model):
+    """
+    NaverMovie Class : MySQL DB의 naver_moive 테이블과 세션을 연결해주는 Class
+    """
 
     __tablename__ = "naver_movie"
 
