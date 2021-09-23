@@ -84,7 +84,8 @@ chatbot-repo
 <img width="352" alt="스크린샷 2021-09-18 오전 12 26 12" src="https://user-images.githubusercontent.com/80459520/133809745-cd466a3f-c985-4981-9946-89e6b92b1cb7.png">
 
 #### **<챗봇 `영화`>**
-- 5위까지의 영화 정보 요청
+- 알고자하는 마지막 순위(숫자) or 전체(문자) 입력
+    - 5위까지의 영화 정보 요청
 
 <img width="640" alt="스크린샷 2021-09-18 오전 12 28 07" src="https://user-images.githubusercontent.com/80459520/133811036-6d28b5dc-f0c0-456f-a70c-244c41be6131.png">
 
