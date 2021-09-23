@@ -13,10 +13,6 @@ DEFAULT_REQUEST_HEADERS = {
   "Referer": "https://movie.naver.com/"
 }
 
-#SPIDER_MIDDLEWARES = {
-#    'naver_movie.middlewares.NaverMovieSpiderMiddleware': 543,
-#}
-
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
