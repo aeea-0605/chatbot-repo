@@ -7,14 +7,24 @@ key_info = config['api']
 db_info = config['db']
 
 class Config(object):
-    # DEBUG = True
-    TEMTLATES_AUTO_RELOAD = True
+    """
+    Config Class : mysql의 db와 세션을 연결해주는 Class
+    """
     TEMTLATES_AUTO_RELOAD = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{db_info["USER"]}:{db_info["PASSWORD"]}@{db_info["HOST"]}/{db_info["DB"]}'
 
 
-class ApiKey:    
+class ApiKey:
+    """
+    ApiKey Class : 챗봇의 내부적인 기능을 수행하기 위해 필요한
+                   api_key 및 webhook_url 정보와 함수가 있는 Class
+    Static Method
+        get_json function : list타입으로 필요한 class variable을 입력하면
+                            dictionary 타입으로 해당 정보를 리턴해주는 함수
+        input arguments : need_list (필요한 api의 이름)
+        return api_key to json
+    """
     KAKAO_KEY = key_info['KAKAO_KEY']
     WEATHER_KEY = key_info['WEATHER_KEY']
     NAVER_ID = key_info['NAVER_ID']
