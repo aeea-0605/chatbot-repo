@@ -14,6 +14,8 @@ class NaverMoviePipeline:
     def open_spider(self, spider):
         spider.logger.info("Pipeline Started.")
         QUERY = """
+DROP TABLE naver_movie;
+
 CREATE TABLE IF NOT EXISTS naver_movie (
 id INT PRIMARY KEY AUTO_INCREMENT, 
 title TEXT, 
@@ -32,7 +34,6 @@ crawled_time TEXT);
     def process_item(self, item, spider):
 
         if item.get("rate") != "0":
-            # item["is_pass"] = True
             item["crawled_time"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             self.curs.execute(f'INSERT INTO naver_movie (title, link, rate, genre, score, view, director, actor, crawled_time) VALUES ("{item.get("title")}", "{item.get("link")}", {item.get("rate")}, "{item.get("genre")}", {item.get("score")}, {item.get("view")}, "{item.get("director")}", "{item.get("actor")}", "{item.get("crawled_time")}");')
