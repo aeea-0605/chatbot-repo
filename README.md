@@ -114,10 +114,14 @@ $source setup_scrapy.sh
 - chatbot-repo 디렉토리에서 실행
     - naver_movie project 폴더 생성 및 수집할 경로에 대한 spider 파일인 `NaverMovie.py` 생성
 
+<br/>
+
 #### **2) naver_movie `items.py` 작성**
 > [items.py](https://github.com/aeea-0605/chatbot-repo/blob/main/naver_movie/naver_movie/items.py)
 - 수집하고자 하는 영화 정보를 가진 NaverMovieItem class 생성
     -  제목, 링크, 예매율, 장르, 평점, 누적관객수, 감독, 배우, 수집시간에 대한 정보
+
+<br/>
 
 #### **3) naver_movie `NaverMovie.py` 작성**
 > [NaverMovie.py](https://github.com/aeea-0605/chatbot-repo/blob/main/naver_movie/naver_movie/spiders/NaverMovie.py)
@@ -128,9 +132,13 @@ $source setup_scrapy.sh
     1. response 받은 링크에서 제목, 장르, 평점, 누적관객수, 감독, 배우 데이터 수집
     2. response 받은 url, 예매율 및 수집한 데이터를 NaverMovieItem에 yield item 객체 생성
 
+<br/>
+
 #### **4) DB와 세션 연결을 위한 `config.py` 작성**
 > [config.py](https://github.com/aeea-0605/chatbot-repo/blob/main/naver_movie/naver_movie/config.py)
 - data.ini의 "db"에 대한 정보를 불러와 db_info 변수에 저장
+
+<br/>
 
 #### **5) naver_movie `pipelines.py` 작성**
 > [pipelines.py](https://github.com/aeea-0605/chatbot-repo/blob/main/naver_movie/naver_movie/pipelines.py)
@@ -141,13 +149,19 @@ $source setup_scrapy.sh
     - 예매가 이루어진 객체에 대해 수집시간 부여 및 naver_movie TABLE에 객체에 대한 정보를 INSERT 후 log message 출력
 - `close_spider` : 최후 한 번 log message 출력, 퀴리에 대한 commit 및 세션 종료
 
+<br/>
+
 #### **6) naver_movie `settings.py` 작성**
 > [settings.py](https://github.com/aeea-0605/chatbot-repo/blob/main/naver_movie/naver_movie/settings.py)
 - robots.txt, MIDDLEWARE, PIPELINES 등에 대한 설정
 
+<br/>
+
 #### **7) Scrapy Project 실행을 위한 `run_scrapy.sh` 작성**
 > [run_scrapy.sh](https://github.com/aeea-0605/chatbot-repo/blob/main/run_scrapy.sh)
 - -o 옵션을 통해 csv 파일로도 저장
+
+<br/>
 
 #### **8) 자동화를 위한 crontab 파일 작성**
 ```
@@ -156,6 +170,8 @@ PATH=/home/ubuntu/.pyenv/versions/python3/bin:/usr/local/bin
 ```
 - PATH를 통한 경로설정
 - `@reboot` 명령어를 통해 서버가 시작될 때 `run_scrapy.sh` 가 실행되어 크롤링을 진행
+
+<br/>
 
 #### **9) AWS lambda의 함수 설정**
 - AWS의 인스턴스를 시작시키고 종료시킬 수 있는 두 개의 함수를 작성합니다.
@@ -199,6 +215,8 @@ $source setup_chatbot.sh
 ```
 - chatbot-repo 디렉토리에서 실행
 
+<br/>
+
 #### **2)chabot.libs modules 작성**
 1. `naver.py`
     > [naver.py](https://github.com/aeea-0605/chatbot-repo/blob/main/chatbot/app/libs/naver.py)
@@ -214,20 +232,28 @@ $source setup_chatbot.sh
     > [slack.py](https://github.com/aeea-0605/chatbot-repo/blob/main/chatbot/app/libs/slack.py)
     - `send_msg` : Webhook url과 텍스트를 받아 Slack Workspace에 전송해주는 함수
 
+<br/>
+
 #### **3) API KEY와 DB정보에 대한 `config.py` 작성**
 > [config.py](https://github.com/aeea-0605/chatbot-repo/blob/main/chatbot/app/config.py)
 - data.ini의 "db", "api"에 대한 정보를 불러와 각각 db_info, key_info 변수에 저장
 - `Config` : db_info에 대한 정보를 통해 MySQL의 DB와 세션을 연결해주는 Class
 - `ApiKey` : key_info에 대한 정보와 해당 정보를 필요에 맞게 반환해주는 static method를 보유한 Class
 
+<br/>
+
 #### **4) app 생성을 위한 `__init__.py` 작성**
 > [__init__.py](https://github.com/aeea-0605/chatbot-repo/blob/main/chatbot/app/__init__.py)
 - Flask를 사용한 app 생성 및 Config에 대한 정보를 받음
 - app.route decorator를 받는 함수들은 import 받아 사용
 
+<br/>
+
 #### **5) naver_movie TABLE과 연결을 위한 `mysql_movie.py` 작성**
 > [mysql_movie.py](https://github.com/aeea-0605/chatbot-repo/blob/main/chatbot/app/items/mysql_movie.py)
 - app을 import 받아 flask_sqlalchemy를 사용해 app에 연결된 데이터베이스에 naver_movie 테이블 연결
+
+<br/>
 
 #### **6) app의 여러 기능을 위한 `bot.py` 작성**
 > [bot.py](https://github.com/aeea-0605/chatbot-repo/blob/main/chatbot/app/routes/bot.py)
@@ -237,9 +263,13 @@ $source setup_chatbot.sh
     - 영화 : naver_movie TABLE과 연결된 NaverMovie Class와 sqlalchemy를 사용해 영화에 대한 정보를 response
     - 도움 : 챗봇을 이용하는 방법에 대한 정보를 response
 
+<br/>
+
 #### **7) flask를 실행시킬 `chatbot.py` 작성**
 > [chatbot.py](https://github.com/aeea-0605/chatbot-repo/blob/main/chatbot/chatbot.py)
 - 완성된 app을 import 받아 flask 실행
+
+<br/>
 
 #### **8) Chatbot Project 실행을 위한 `run_chatot.sh` 작성**
 > [run_chatbot.sh](https://github.com/aeea-0605/chatbot-repo/blob/main/run_chatbot.sh)
