@@ -33,12 +33,16 @@ def bot():
         params.update({"msg": data})
         msg = naver.translate(**params)
     elif command == "영화":
-        datas = NaverMovie.query.order_by(NaverMovie.rate.desc()).limit(int(data))
+        if data != "전체":    
+            datas = NaverMovie.query.order_by(NaverMovie.rate.desc()).limit(int(data)).all()
+        else:
+            datas = NaverMovie.query.order_by(NaverMovie.rate.desc()).all()
+            
         msg = f'<수집시점 : {datas[0].crawled_time.split(" ")[0]}>\n'
-        for i in range(int(data)):
+        for i in range(int(datas)):
             msg += f'{i+1}. {datas[i].title} (예매율: {datas[i].rate}%, 평점: {datas[i].score}) \n'
             msg += f'\t {datas[i].link}\n'
-            if i != (int(data) - 1):
+            if i != (int(datas) - 1):
                 msg += "-------------------\n"
     elif command == "도움":
         msg = """
