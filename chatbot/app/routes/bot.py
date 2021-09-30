@@ -1,3 +1,5 @@
+import os
+import logging
 from flask import request, Response
 from app import app
 from app.libs import naver
@@ -5,7 +7,12 @@ from app.libs import forecast
 from app.libs import slack
 from app.config import ApiKey
 from app.items.mysql_movie import NaverMovie
+from app.set_logger import Logger
 
+
+save_path = os.path.join(os.getcwd(), 'log')
+
+logger = Logger('chatbot', save_path)
 
 @app.route("/")
 def index():
@@ -24,6 +31,9 @@ def bot():
         return Response(), 200
 
     command, data = text.split(":")[0], text.split(":")[1]
+
+    logger.logger.info(f"@@command: {command} @@data: {data}")
+
     if command == "날씨":
         params = ApiKey.get_json(["naver", "kakao", "weather"])
         params.update({"addr": data})
