@@ -1,0 +1,6 @@
+LOG:: 2021-09-30 13:51:15,959 - chatbot - INFO - @@command: 도움 @@data: 
+LOG:: 2021-09-30 13:51:43,331 - chatbot - INFO - @@command: 날씨 @@data: 서울
+LOG:: 2021-09-30 13:52:14,336 - chatbot - INFO - @@command: 번역 @@data: computer
+LOG:: 2021-09-30 13:52:43,979 - chatbot - INFO - @@command: 영화 @@data: 7
+LOG:: 2021-09-30 13:53:00,301 - chatbot - INFO - @@command: 영화 @@data: 전체
+LOG:: 2021-09-30 14:01:50,698 - chatbot - INFO - @@command: 날씨 @@data: 인천
