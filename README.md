@@ -5,13 +5,14 @@
 <br/>
 
 ### **1-1. 프로젝트 목적**
-네이버 <상영작·예정작> 카테고리의 영화 정보에 대한 자동화된 데이터 파이프라인 구축 및 OpenAPI를 사용한 다양한 기능(영화, 날씨, 번역)의 Slack 챗봇 서비스를 제공하는 프로젝트 입니다.
+네이버 <상영작·예정작> 카테고리의 영화 정보에 대한 자동화된 데이터 파이프라인 구축 및 OpenAPI를 사용한 다양한 기능(영화, 날씨, 번역)의 Slack 챗봇 서비스를 제공하는 프로젝트입니다.
 
 <br/>
 
 ### **1-2. 프로젝트 목표**
-- Slack의 워크스페이스에서 Client와 Request & Response 하여 동적인 컨텐츠를 제공하는 챗봇을 구현한다.
+- Slack의 워크스페이스에서 Client와 Request & Response 하여 동적인 컨텐츠를 제공하는 챗봇을 구현합니다.
 - AWS의 Lambda를 사용하여 크롤링서버를 컨트롤합니다.
+- scrapy와 chatbot에 대한 logger를 만들어 history를 기록합니다. (9월 29일 추가)
 
 <br/>
 
@@ -26,7 +27,7 @@
     - Naver API(papago) : 번역
     - Kakao API(local) : 좌표 반환
     - openweathermap : 날씨
-- configparser & data.ini 파일을 통한 hide variable
+- logging을 사용한 logger 구현
 
 <br/>
 
@@ -38,6 +39,7 @@ chatbot-repo
 │   ├── app
 │   │   ├── __init__.py : app 생성
 │   │   ├── config.py : DB 및 API 정보
+│   │   ├── set_logger.py : chatbot logger 설정
 │   │   ├── items
 │   │   │   └── mysql_movie.py : TABLE 연결
 │   │   ├── libs
@@ -45,7 +47,9 @@ chatbot-repo
 │   │   │   ├── naver.py : 변역 정보 제공
 │   │   │   └── slack.py : slack에 메세지 보내는 기능 제공
 │   │   └── routes
-│   │       └── bot.py : 챗봇의 기능
+│   │       └── bot.py : 챗봇의 기능 및 log 기록
+│   ├── log
+│   │   └── chatbot.log : client가 request에 대한 log 파일
 │   └── chatbot.py : flask 실행
 ├── naver_movie : 영화 크롤링 프로젝트
 │   ├── naver_movie
@@ -55,9 +59,12 @@ chatbot-repo
 │   │   ├── middlewares.py
 │   │   ├── pipelines.py : 수집 데이터 필터링 및 DB에 저장
 │   │   ├── settings.py : scrapy에 대한 설정
+│   │   ├── set_logger.py : scrapy logger 설정
 │   │   └── spiders
 │   │       ├── __init__.py
-│   │       └── NaverMovie.py : 크롤링에 대한 코드
+│   │       └── NaverMovie.py : 크롤링에 대한 코드 및 log 기록
+│   ├── log
+│   │   └── scrapy.log : scrapy 실행&종료에 대한 log 파일
 │   └── scrapy.cfg
 ├── data.ini : hide variable에 대한 정보
 ├── run_chatbot.sh : 챗봇 프로젝트 실행 코드
@@ -71,6 +78,8 @@ chatbot-repo
 ---
 ---
 ## 2. 결과
+
+### **2-1. 챗봇**
 
 #### **<챗봇 호출>**
 <img width="438" alt="스크린샷 2021-09-18 오전 12 21 17" src="https://user-images.githubusercontent.com/80459520/133807895-5c6be44a-667a-4811-8b93-ab791eec7c20.png">
@@ -95,6 +104,30 @@ chatbot-repo
 <img width="547" alt="스크린샷 2021-09-18 오전 12 32 27" src="https://user-images.githubusercontent.com/80459520/133813613-baf8799e-645e-440f-8106-4442f13de2ed.png">
 
 - 현재 챗봇이 보유한 명령어를 알려주는 정보 제공
+
+<br/>
+
+---
+### **2-2 log**
+
+#### **<scrapy log 파일>**
+> [scrapy.log](https://github.com/aeea-0605/chatbot-repo/blob/main/naver_movie/log/scrapy.log)
+- 크롤링 시작&종료에 대한 로그를 기록해 크롤링 시간 및 수집시기를 알 수 있다.
+
+<br/>
+
+#### **<chatbot log 파일>**
+> [chatbot.log](https://github.com/aeea-0605/chatbot-repo/blob/main/chatbot/log/chatbot.log)
+- Client가 request한 data에 대한 로그를 기록해 유저가 보낸 명령어 및 원하는 정보를 알 수 있다.
+- 로그에 대한 기록을 분석해 해당 챗봇에서 많이 사용되는 명령어를 알 수 있다.
+
+<br/>
+
+#### **< console log during scrapying >**
+
+<img width="400" alt="스크린샷 2021-09-30 오후 3 04 46" src="https://user-images.githubusercontent.com/80459520/135396352-c5274001-8637-4676-8bee-9d5859e41d53.png">
+
+- 최초 파이프라인이 실행될 때, crawled data가 조건을 만족하여 DB에 저장되었을 때, 최후 파이프라인이 종료될 때에 대한 log만 console창에 띄워지도록 설정
 
 <br/>
 
@@ -204,6 +237,19 @@ PATH=/home/ubuntu/.pyenv/versions/python3/bin:/usr/local/bin
     - lambda_function.py
         - start의 lambda_function.py에서 start_instances method를 stop_instances method로 변경
 
+<br/>
+
+#### **+추가 : scrapy logger 생성**
+> [set_logger.py](https://github.com/aeea-0605/chatbot-repo/blob/main/naver_movie/naver_movie/set_logger.py)
+- `LogFilter`
+    - 'Scrapying' 문자열이 포함된 로그메세지만 log 파일에 기록
+- `ConsoleFilter`
+    - console창에 띄울 메세지들을 정의하고 해당 메세지에 대해서만 console창에 띄움
+- `make_f_handler`
+    - FileHandler 생성 및 log의 format 정의
+
+<br/>
+
 ---
 
 ### **3-2. 챗봇 서비스 구축**
@@ -271,12 +317,17 @@ $source setup_chatbot.sh
 
 <br/>
 
-#### **8) Chatbot Project 실행을 위한 `run_chatot.sh` 작성**
+#### **8) Chatbot Project 실행을 위한 `run_chatbot.sh` 작성**
 > [run_chatbot.sh](https://github.com/aeea-0605/chatbot-repo/blob/main/run_chatbot.sh)
 - Flask Debug를 True로 하여 수정사항에 자동으로 적용되게끔 설정
 - `chatbot.py` 를 실행시키는 Shell Script
 
 <br/>
+
+#### **+추가 : chatbot logger 생성**
+> [set_logger.py](https://github.com/aeea-0605/chatbot-repo/blob/main/chatbot/app/set_logger.py)
+- `Logger`
+    - FileHandler가 설정된 logger에 대한 Class
 
 ---
 ---
