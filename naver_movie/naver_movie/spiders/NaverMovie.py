@@ -1,13 +1,30 @@
+import os
+import logging
 import scrapy
 import numpy as np
 import re
 from ..items import NaverMovieItem
+from ..set_logger import LogFilter, ConsoleFilter, make_f_handler
 
+
+save_path = os.path.join(os.getcwd(), 'log')
+
+f_handler = make_f_handler('scrapy', save_path)
 
 class NaverMovieSpider(scrapy.Spider):
     name = 'NaverMovie'
     allowed_domains = ['movie.naver.com']
     start_urls = ['http://movie.naver.com/movie/running/current.naver']
+
+    def __init__(self, *args, **kwargs):
+        logging.root.addHandler(f_handler)
+        for idx, handler in enumerate(logging.root.handlers):
+            if idx == 1:
+                handler.addFilter(ConsoleFilter())
+                continue
+            else:
+                handler.addFilter(LogFilter())
+        super().__init__(*args, **kwargs)
 
     def parse(self, response):
         
