@@ -33,6 +33,9 @@
 
 ### **1-4. 프로젝트 구성도**
 
+<img width="905" alt="스크린샷 2021-10-01 오후 5 04 18" src="https://user-images.githubusercontent.com/80459520/135587216-0221bf14-7913-477c-8586-f3097ffbf1bd.png">
+
+
 ```
 chatbot-repo
 ├── chatbot : 챗봇 프로젝트
